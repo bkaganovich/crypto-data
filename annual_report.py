@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # File: annual_report.py
-# Retrieves timestamp, price, marketcap, volume using CoinGecko API and
-# creates annual report CSV for coin pair
+# Retrieves daily price, market capitalization, volume from CoinGecko API
+# and creates annual CSV report
 
 import sys, os, datetime
 from datetime import timezone, timedelta
@@ -43,16 +43,16 @@ def single_report(coin, vs_currency, year):
             archivo.write(f'{date},{price},{market_cap},{total_vol}\n')
     print('Output:', filename) #verbose
 
-def bulk_reports(): #modify for desired reports
-    coins = ['ethereum','cardano','monero'] #set desired coins
-    pairs = ['usd','btc'] #set desired pairs
+def bulk_reports(): #modify for desired reports 
     this_year = int(datetime.datetime.now().strftime('%Y')) #this year
+    coins = ['ethereum','cardano','monero'] #set desired coins
+    vs_currencies = ['usd','btc'] #set desired pairs
     start_year = 2021 #set start year range
     end_year = this_year #set end year range
 
     for year in range(start_year, end_year+1): #each year
         for coin in coins: #each coin
-            for pair in pairs: #each pair
+            for pair in vs_currencies: #each pair
                 single_report(coin, pair, year) #create report
 
 if not len(sys.argv) > 1:
