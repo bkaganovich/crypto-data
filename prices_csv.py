@@ -3,13 +3,12 @@
 # Creates CSV with timestamp of current prices using Binance API
 
 from binance.client import Client
-import config #api keys
 import csv, datetime, os
 
-#client = Client(config.api_key, config.api_secret) #login
 client = Client("", "") #doesn't need keys
 
-symbols = ['BTCUSDT','ADABTC','ADAUSDT','ETHBTC','ETHUSDT','XMRBTC','XMRUSDT','DOGEBTC','DOGEUSDT']
+symbols = ['BTCUSDT','ADABTC','ADAUSDT','ETHBTC','ETHUSDT','XMRBTC','XMRUSDT',
+        'DOGEBTC','DOGEUSDT']
 prices = {} #init dictionary
 
 for ticker in symbols:
@@ -20,13 +19,13 @@ for ticker in symbols:
 def create_file(filename):
     with open(filename, "w") as file:
         for ticker in prices:
-            file.write(f"{ticker},{prices[ticker]},\n") #write ticker and price per row
+            file.write(f"{ticker},{prices[ticker]},\n") #per row
+    print('Output:', filename) #verbose
 
 today = datetime.datetime.now() #get date
 formatted = today.strftime("%Y-%m-%d") #format date yyyy-mm-dd
 utime = today.strftime("%s") #unix time
 
 cwd = os.getcwd()
-if not os.path.isdir('sheets'):
-    os.mkdir('sheets') #create sheets dir if not present
-create_file(f'{cwd}/sheets/{utime}-prices.csv') #make csv with unix time in sheets dir
+if not os.path.isdir('reports'): os.mkdir('reports') #create reports dir 
+create_file(f'{cwd}/reports/{utime}-prices.csv') #make csv with unix timestamp
